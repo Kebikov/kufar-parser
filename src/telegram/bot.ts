@@ -18,7 +18,7 @@ const startTimeoutParser = ({page, updateMinute}:{page: string, updateMinute: nu
     const ms = updateMinute * 1000 * 60;
     parserInterval = setTimeout(async () => {
         await parser(page);
-        startTimeoutParser({page, updateMinute: ms});
+        startTimeoutParser({page, updateMinute});
     }, ms);
 }
 

@@ -7,7 +7,7 @@ interface IStartBrowser {
 }
 
 
-const startBrowser = async (url: string): Promise<IStartBrowser> => { console.log('...начало работы');
+const startBrowser = async (url: string): Promise<IStartBrowser> => { console.log('...начало работы--------------------------------------------------------------');
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(url, {waitUntil: 'domcontentloaded'});
