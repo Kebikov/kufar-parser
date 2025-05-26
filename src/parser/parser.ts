@@ -17,7 +17,7 @@ async function parser(url: string) {
         const {token, chatId, fromId} = getEnv();
         const bot = new TelegramBot(token);
         
-        const {page, browser} = await startBrowser(url);
+        const {page, browser, chromePath} = await startBrowser(url);
 
         const currentCollection = await getCollection(page);
 
@@ -46,8 +46,10 @@ async function parser(url: string) {
 
         await browser.close();
         console.log('...конец работы');
+        return chromePath;
     } catch(err) {
         console.error(err);
+        throw new Error('Ошибка в [parser]')
     }
 }
 

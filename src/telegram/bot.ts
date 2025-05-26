@@ -34,6 +34,12 @@ const telegramBotKufar = () => {
             { command: '/check_bot', description: '🔍 Проверка работы бота.'}
         ]);
 
+        bot.on('message', (msg) => {
+            console.log('chat id:', msg.chat.id);
+            console.log('from id:', msg.from?.id);
+        });
+
+
         bot.onText(/\/start/,async (msg) => {
             try {
                 if (msg.from?.id !== Number(fromId)) {
@@ -44,12 +50,17 @@ const telegramBotKufar = () => {
                 if(flagWorkParser) {
                     bot.sendMessage(chatId, '✅ Парсер уже работает!');
                 } else {
-                    await parser(pageForParser);
+                    const chromePath = await parser(pageForParser);
                     startTimeoutParser({
                         page: pageForParser,
                         updateMinute: 10
                     });
-                    bot.sendMessage(chatId, '🚀 Парсер запушен!');
+                    bot.sendMessage(chatId, 
+                        `🚀 Парсер запушен!\n` +
+                        `Путь к Google Chrome:\n` +
+                        `${chromePath}`,
+                        {parse_mode: 'HTML'}
+                    );
                     flagWorkParser = true;
                 }
             } catch (error) {
