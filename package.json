@@ -4,7 +4,7 @@
   "main": "app.ts",
   "scripts": {
     "dev": "ts-node src/app.ts",
-    "build": "rimraf ./build && npx tsc && npx @puppeteer/browsers install chrome",
+    "build": "rimraf ./build && npx tsc",
     "prod": "node build/app.js",
     "check": "ts-node src/check.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
