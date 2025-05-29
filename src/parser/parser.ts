@@ -8,6 +8,7 @@ import startBrowser from "./utils/startBrowser";
 import TelegramBot from 'node-telegram-bot-api';
 import getEnv from '../util/getEnv';
 import checkAndCreateFolderData from './utils/checkAndCreateFolderData';
+import { globalState } from '../global/globalState';
 
 
 async function parser(url: string) {
@@ -38,7 +39,9 @@ async function parser(url: string) {
                     );
                 });
             } else {
-                console.log('❌ Нет новых macBooks.');
+                const date = new Date();
+                globalState.lastCheckMacBooks = date.toLocaleString();
+                console.log(`❌ Нет новых macBooks. Дата/время проверки: ${globalState.lastCheckMacBooks}`);
             }
         } else {
             await writeCollection(currentCollection);

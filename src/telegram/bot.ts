@@ -2,7 +2,7 @@ import TelegramBot from 'node-telegram-bot-api';
 import processingError from './utils/processingError';
 import parser from '../parser/parser';
 import getEnv from '../util/getEnv';
-
+import { globalState } from '../global/globalState';
 
 process.on('uncaughtException', (error) => {
     processingError(error);
@@ -34,11 +34,10 @@ const telegramBotKufar = () => {
             { command: '/check_bot', description: '🔍 Проверка работы бота.'}
         ]);
 
-        bot.on('message', (msg) => {
-            console.log('chat id:', msg.chat.id);
-            console.log('from id:', msg.from?.id);
-        });
-
+        // bot.on('message', (msg) => {
+        //     console.log('chat id:', msg.chat.id);
+        //     console.log('from id:', msg.from?.id);
+        // });
 
         bot.onText(/\/start/,async (msg) => {
             try {
@@ -48,7 +47,11 @@ const telegramBotKufar = () => {
                 }
 
                 if(flagWorkParser) {
-                    bot.sendMessage(chatId, '✅ Парсер уже работает!');
+                    bot.sendMessage(
+                        chatId, 
+                        '✅ <b>Парсер уже работает!</b>', 
+                        {parse_mode: 'HTML'}
+                    );
                 } else {
                     const chromePath = await parser(pageForParser);
                     startTimeoutParser({
@@ -96,7 +99,12 @@ const telegramBotKufar = () => {
                     return;
                 }
 
-                bot.sendMessage(chatId, '🚀 Бот работает!')
+                bot.sendMessage(
+                    chatId, 
+                    '🚀 <b>Бот работает!</b>\n' +
+                    `🔍 <i>Последняя проверка kufar была: ${globalState.lastCheckMacBooks ?? 'бот недавно запушен.'}</i>`, 
+                    {parse_mode: 'HTML'}
+                );
             } catch (error) {
                 processingError(error);
             }
